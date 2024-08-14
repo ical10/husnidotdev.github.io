@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "preview": "astro preview"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.2",

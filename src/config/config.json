@@ -1,8 +1,7 @@
 {
   "site": {
     "title": "Husni - Web3 Dev Blog",
-    "base_url": "https://husnidotdev.github.io",
-    "base_path": "/",
+    "base_url": "https://ical10.github.io",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
     "logo": "/images/logo.png",
