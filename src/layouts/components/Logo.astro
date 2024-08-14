@@ -15,12 +15,14 @@ const {
   logo_text: string;
   title: string;
 } = config.site;
+const { class: className, ...rest } = Astro.props;
 ---
 
 <a href="/" class="navbar-brand block">
   {
     src || logo ? (
       <Image
+        class={className}
         width={logo_width.replace("px", "") * 2}
         height={logo_height.replace("px", "") * 2}
         src={src ? src : logo}
@@ -29,6 +31,7 @@ const {
           height: logo_height.replace("px", "") + "px",
           width: logo_width.replace("px", "") + "px",
         }}
+        {...rest}
       />
     ) : logo_text ? (
       logo_text

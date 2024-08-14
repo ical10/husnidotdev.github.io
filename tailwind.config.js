@@ -38,6 +38,9 @@ module.exports = {
       padding: "2rem",
     },
     extend: {
+      maskImage: {
+        circle: "radial-gradient(circle, white 100%, transparent 100%)",
+      },
       colors: {
         text: theme.colors.default.text_color.default,
         light: theme.colors.default.text_color.light,
