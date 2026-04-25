@@ -1,0 +1,123 @@
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* Inline code chip */
+.prose :not(pre) > code {
+  background: var(--code-bg);
+  border: 1px solid var(--rule);
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-sm);
+  font-size: 0.88em;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.prose pre {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  line-height: 1.55;
+  background: var(--code-bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1em 1.1em;
+  overflow-x: auto;
+  margin: 1.4em 0;
+  tab-size: 2;
+}
+
+.prose pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  white-space: pre;
+}
+
+/* Shiki dual theme: swap on dark mode */
+@media (prefers-color-scheme: dark) {
+  .prose pre,
+  .prose pre span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
+/* Language label */
+.code-block {
+  position: relative;
+  margin: 1.4em 0;
+}
+.code-block > pre { margin: 0; }
+.code-block .code-lang {
+  position: absolute;
+  top: 0.5em;
+  right: 0.7em;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  background: var(--bg-elevated);
+  padding: 0.15em 0.5em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+.code-block .copy-btn {
+  position: absolute;
+  top: 0.5em;
+  right: 0.7em;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--rule);
+  padding: 0.25em 0.55em;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: opacity var(--transition), color var(--transition);
+}
+.code-block:hover .copy-btn,
+.code-block .copy-btn:focus-visible { opacity: 1; }
+.code-block:hover .code-lang { opacity: 0; }
+.code-block .copy-btn:hover { color: var(--accent); }
+.code-block .copy-btn[data-copied="true"] { color: #15803D; }
+
+/* Shiki line highlight transformer */
+.prose pre .highlighted {
+  display: inline-block;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.04);
+  border-left: 2px solid var(--accent);
+  margin-inline: -1.1em;
+  padding-inline: 1.1em calc(1.1em - 2px);
+}
+@media (prefers-color-scheme: dark) {
+  .prose pre .highlighted { background: rgba(255, 255, 255, 0.04); }
+}
+
+/* Diff transformer */
+.prose pre .diff.add {
+  display: inline-block;
+  width: 100%;
+  background: rgba(34, 139, 34, 0.10);
+  margin-inline: -1.1em;
+  padding-inline: 1.1em;
+}
+.prose pre .diff.add::before { content: '+'; color: #15803D; padding-right: 0.6em; }
+.prose pre .diff.remove {
+  display: inline-block;
+  width: 100%;
+  background: rgba(220, 38, 38, 0.10);
+  margin-inline: -1.1em;
+  padding-inline: 1.1em;
+}
+.prose pre .diff.remove::before { content: '−'; color: #B91C1C; padding-right: 0.6em; }

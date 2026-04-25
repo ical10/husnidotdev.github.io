@@ -1,0 +1,117 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TOC from '../components/TOC.astro';
+import ReadingMeta from '../components/ReadingMeta.astro';
+import TagList from '../components/TagList.astro';
+import ShareRow from '../components/ShareRow.astro';
+import PostNav from '../components/PostNav.astro';
+import EditOnGitHub from '../components/EditOnGitHub.astro';
+import Giscus from '../components/Giscus.astro';
+import MediumZoom from '../components/MediumZoom.astro';
+import { readingMeta, postSourcePath, type Post } from '../lib/posts';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  post: Post;
+  headings: MarkdownHeading[];
+  prev?: Post;
+  next?: Post;
+  body: string;
+}
+
+const { post, headings, prev, next, body } = Astro.props;
+const { words, minutes } = readingMeta(body);
+const url = new URL(`/posts/${post.id}/`, Astro.site).toString();
+const ogImage = post.data.image;
+---
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description ?? post.data.title}
+  ogType="article"
+  ogImage={ogImage}
+  publishedTime={post.data.date}
+  modifiedTime={post.data.updated ?? post.data.date}
+>
+  <div class="post-layout">
+    <article class="post">
+      <header class="post-header">
+        <h1>{post.data.title}</h1>
+        {post.data.description && <p class="lede">{post.data.description}</p>}
+        <ReadingMeta
+          date={post.data.date}
+          updated={post.data.updated}
+          minutes={minutes}
+          words={words}
+        />
+      </header>
+
+      <div class="prose">
+        <slot />
+      </div>
+
+      <footer class="post-footer">
+        <TagList tags={post.data.tags} kind="tag" />
+        <TagList tags={post.data.categories} kind="category" />
+        <ShareRow title={post.data.title} url={url} />
+        <EditOnGitHub path={postSourcePath(post)} />
+      </footer>
+
+      <PostNav prev={prev} next={next} />
+      <Giscus />
+    </article>
+
+    <TOC headings={headings} />
+  </div>
+
+  <MediumZoom />
+</BaseLayout>
+
+<style>
+  .post-layout {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: var(--space-3);
+  }
+  .post-header {
+    max-width: var(--measure);
+    margin: 0 auto var(--space-4);
+  }
+  .post-header h1 {
+    font-family: var(--font-sans);
+    font-size: var(--fs-h1);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin: 0 0 0.4em;
+    color: var(--text);
+  }
+  .post-header .lede {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin: 0 0 var(--space-3);
+  }
+  .post-footer {
+    max-width: var(--measure);
+    margin: var(--space-4) auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .post-layout :global(.post-nav),
+  .post-layout :global(.comments) {
+    max-width: var(--measure);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 1100px) {
+    .post-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: var(--space-5);
+      align-items: start;
+    }
+    .post { min-width: 0; }
+  }
+</style>

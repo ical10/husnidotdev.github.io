@@ -1,0 +1,65 @@
+---
+import { SITE } from '../site';
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+<header class="site-header">
+  <div class="container-wide site-header__inner">
+    <a class="site-title" href="/">{SITE.title}</a>
+    <nav aria-label="Primary">
+      <ul>
+        {SITE.nav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    padding-block: var(--space-3);
+  }
+  .site-header__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .site-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .site-title:hover { color: var(--accent); }
+  nav ul {
+    display: flex;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+  }
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  nav a:hover { color: var(--text); }
+  nav a[aria-current='page'] { color: var(--text); font-weight: 600; }
+  @media (max-width: 540px) {
+    nav ul { gap: var(--space-2); }
+  }
+</style>

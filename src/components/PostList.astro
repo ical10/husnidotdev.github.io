@@ -1,0 +1,67 @@
+---
+import type { Post } from '../lib/posts';
+import { postPath } from '../lib/posts';
+import { formatDate, isoDate } from '../lib/format';
+interface Props { posts: Post[] }
+const { posts } = Astro.props;
+---
+<ol class="post-list">
+  {posts.map((post) => (
+    <li>
+      <article>
+        <a href={postPath(post)}>
+          <h2>{post.data.title}</h2>
+        </a>
+        {post.data.description && <p class="excerpt">{post.data.description}</p>}
+        <p class="meta">
+          <time datetime={isoDate(post.data.date)}>{formatDate(post.data.date)}</time>
+          {post.data.tags.length > 0 && (
+            <>
+              <span class="dot">·</span>
+              <span>{post.data.tags.map((t) => `#${t}`).join('  ')}</span>
+            </>
+          )}
+        </p>
+      </article>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .post-list { list-style: none; padding: 0; margin: 0; }
+  .post-list > li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .post-list > li:last-child { border-bottom: 0; }
+  .post-list a {
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+  }
+  .post-list h2 {
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    font-weight: 650;
+    margin: 0 0 0.4em;
+    color: var(--text);
+    transition: color var(--transition);
+  }
+  .post-list a:hover h2 { color: var(--accent); }
+  .excerpt {
+    font-family: var(--font-serif);
+    font-size: var(--fs-body);
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin: 0 0 0.6em;
+  }
+  .meta {
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+    color: var(--text-subtle);
+    margin: 0;
+  }
+  .dot { margin-inline: 0.5em; opacity: 0.6; }
+</style>

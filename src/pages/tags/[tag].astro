@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getAllPosts, getAllTags } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const tags = getAllTags(posts);
+  return [...tags.entries()].map(([key, { display, posts: list }]) => ({
+    params: { tag: key.replace(/\s+/g, '-') },
+    props: { tag: display, posts: list },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+<BaseLayout title={`#${tag}`}>
+  <div class="container">
+    <p class="kicker">Tag</p>
+    <h1>#{tag}</h1>
+    <p class="muted small">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+    <PostList posts={posts} />
+  </div>
+</BaseLayout>
+
+<style>
+  .kicker { font-family: var(--font-sans); font-size: var(--fs-tiny); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-subtle); margin: 0; }
+  h1 { font-family: var(--font-sans); font-size: var(--fs-h1); margin: 0.2em 0 0.4em; }
+</style>

@@ -1,0 +1,30 @@
+---
+import { SITE } from '../site';
+---
+<section class="comments" aria-label="Comments">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo={SITE.giscus.repo}
+    data-repo-id={SITE.giscus.repoId}
+    data-category={SITE.giscus.category}
+    data-category-id={SITE.giscus.categoryId}
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="en"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+  ></script>
+</section>
+
+<style>
+  .comments {
+    margin-top: var(--space-5);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--rule);
+  }
+</style>

@@ -1,24 +1,28 @@
-# Hugo build artifacts
-/public/
-/resources/_gen/
-/resources/.hugo_build.lock
-.hugo_build.lock
-
-# Node.js dependencies
+# Astro / Node
 node_modules/
-package-lock.json
+dist/
+.astro/
 
-# OS files
+# Env
+.env
+.env.*
+!.env.example
+
+# Claude Code local state (per-machine, not for sharing)
+.claude/settings.local.json
+.claude/worktrees/
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Editor files
+# Editor
 *.swp
 *.swo
 *~
 .vscode/
 .idea/
 
-# Temporary files
+# Logs
 *.log
 *.tmp

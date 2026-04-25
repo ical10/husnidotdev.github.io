@@ -1,0 +1,34 @@
+---
+interface Props {
+  tags: string[];
+  kind?: 'tag' | 'category';
+}
+const { tags, kind = 'tag' } = Astro.props;
+const base = kind === 'tag' ? '/tags' : '/categories';
+const slug = (s: string) => s.toLowerCase().replace(/\s+/g, '-');
+---
+{tags.length > 0 && (
+  <ul class="tags">
+    {tags.map((t) => (
+      <li><a href={`${base}/${slug(t)}/`}>{kind === 'tag' ? `#${t}` : t}</a></li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em 0.7em;
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+  }
+  .tags a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .tags a:hover { color: var(--accent); }
+</style>

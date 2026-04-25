@@ -1,0 +1,33 @@
+---
+import { formatDate, isoDate } from '../lib/format';
+interface Props {
+  date: Date;
+  updated?: Date;
+  minutes: number;
+  words: number;
+}
+const { date, updated, minutes, words } = Astro.props;
+---
+<p class="reading-meta">
+  <time datetime={isoDate(date)}>{formatDate(date)}</time>
+  <span class="dot">·</span>
+  <span>{minutes} min read</span>
+  <span class="dot">·</span>
+  <span>{words.toLocaleString()} words</span>
+  {updated && updated.getTime() !== date.getTime() && (
+    <>
+      <span class="dot">·</span>
+      <span>updated <time datetime={isoDate(updated)}>{formatDate(updated)}</time></span>
+    </>
+  )}
+</p>
+
+<style>
+  .reading-meta {
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .dot { margin-inline: 0.5em; opacity: 0.6; }
+</style>
