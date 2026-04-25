@@ -1,0 +1,8 @@
+.prose .katex { font-size: 1.05em; color: var(--text); }
+.prose .katex-display {
+  margin: 1.4em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.4em 0;
+}
+.prose .katex-display > .katex { text-align: center; }

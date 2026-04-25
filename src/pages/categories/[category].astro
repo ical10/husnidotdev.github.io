@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getAllPosts, getAllCategories } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const cats = getAllCategories(posts);
+  return [...cats.entries()].map(([key, { display, posts: list }]) => ({
+    params: { category: key.replace(/\s+/g, '-') },
+    props: { category: display, posts: list },
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+<BaseLayout title={category}>
+  <div class="container">
+    <p class="kicker">Category</p>
+    <h1>{category}</h1>
+    <p class="muted small">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+    <PostList posts={posts} />
+  </div>
+</BaseLayout>
+
+<style>
+  .kicker { font-family: var(--font-sans); font-size: var(--fs-tiny); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-subtle); margin: 0; }
+  h1 { font-family: var(--font-sans); font-size: var(--fs-h1); margin: 0.2em 0 0.4em; }
+</style>

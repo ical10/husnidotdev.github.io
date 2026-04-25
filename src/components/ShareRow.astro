@@ -1,0 +1,57 @@
+---
+interface Props {
+  title: string;
+  url: string;
+}
+const { title, url } = Astro.props;
+const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+---
+<div class="share-row" data-share-url={url} data-share-title={title}>
+  <a class="share-btn" href={xUrl} target="_blank" rel="noopener">Share on X</a>
+  <button class="share-btn copy" type="button" data-copy>Copy link</button>
+  <button class="share-btn native" type="button" data-native hidden>Share…</button>
+</div>
+
+<style>
+  .share-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+  }
+  .share-btn {
+    padding: 0.4em 0.9em;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--bg-elevated);
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color var(--transition), color var(--transition);
+  }
+  .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .share-btn[data-copied='true'] { color: #15803D; border-color: #15803D; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.share-row').forEach((row) => {
+    const url = row.dataset.shareUrl ?? location.href;
+    const title = row.dataset.shareTitle ?? document.title;
+    const copy = row.querySelector<HTMLButtonElement>('[data-copy]');
+    const native = row.querySelector<HTMLButtonElement>('[data-native]');
+
+    copy?.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(url);
+      copy.textContent = 'Copied';
+      copy.dataset.copied = 'true';
+      setTimeout(() => { copy.textContent = 'Copy link'; delete copy.dataset.copied; }, 1500);
+    });
+
+    if (typeof navigator.share === 'function') {
+      native!.hidden = false;
+      native!.addEventListener('click', () => navigator.share({ title, url }).catch(() => {}));
+    }
+  });
+</script>

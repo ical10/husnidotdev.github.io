@@ -1,0 +1,9 @@
+---
+import { render, getEntry } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+const entry = await getEntry('pages', 'colophon');
+const { Content } = entry ? await render(entry) : { Content: null };
+---
+<PageLayout title={entry?.data.title ?? 'Colophon'} description={entry?.data.description}>
+  {Content && <Content />}
+</PageLayout>

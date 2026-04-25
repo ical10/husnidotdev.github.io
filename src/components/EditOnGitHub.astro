@@ -1,0 +1,20 @@
+---
+import { SITE } from '../site';
+interface Props { path: string }
+const { path } = Astro.props;
+const url = `${SITE.repoEditBase}${path}`;
+---
+<p class="edit-link">
+  <a href={url} target="_blank" rel="noopener">Edit this page on GitHub →</a>
+</p>
+
+<style>
+  .edit-link {
+    margin-top: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+  .edit-link a { color: var(--text-muted); text-decoration: underline; }
+  .edit-link a:hover { color: var(--accent); }
+</style>

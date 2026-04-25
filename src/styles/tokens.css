@@ -1,0 +1,69 @@
+:root {
+  --bg:           #FAFAF7;
+  --bg-elevated:  #FFFFFF;
+  --bg-sunken:    #F2F0EA;
+  --text:         #222528;
+  --text-muted:   #6B6F76;
+  --text-subtle:  #8A8E95;
+  --rule:         #E6E4DE;
+  --rule-strong:  #D7D3CA;
+  --accent:       #1E40AF;
+  --accent-hover: #0B1F66;
+  --accent-soft:  #DCE4FF;
+  --code-bg:      #F2F0EA;
+  --selection:    #FFE9A8;
+  --shadow-sm:    0 1px 2px rgba(34, 37, 40, 0.04);
+  --shadow-md:    0 4px 24px rgba(34, 37, 40, 0.06);
+
+  --font-sans:  'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Source Serif 4 Variable', 'Charter', 'Iowan Old Style', Georgia, serif;
+  --font-mono:  'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --measure: 68ch;
+  --measure-wide: 76ch;
+  --leading-body: 1.7;
+  --leading-heading: 1.2;
+
+  --space-0: 0.25rem;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6rem;
+
+  --radius-sm: 4px;
+  --radius:    6px;
+  --radius-lg: 10px;
+
+  --fs-base: 1rem;
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+  --fs-tiny: 0.75rem;
+  --fs-h1: 2.25rem;
+  --fs-h2: 1.625rem;
+  --fs-h3: 1.25rem;
+  --fs-h4: 1.0625rem;
+
+  --transition: 150ms ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:           #16181B;
+    --bg-elevated:  #1E2125;
+    --bg-sunken:    #1B1D21;
+    --text:         #E8E6E1;
+    --text-muted:   #9AA0A6;
+    --text-subtle:  #6E7278;
+    --rule:         #2A2D31;
+    --rule-strong:  #3A3D42;
+    --accent:       #93B4FF;
+    --accent-hover: #C9D7FF;
+    --accent-soft:  #1E2A4D;
+    --code-bg:      #1E2125;
+    --selection:    #4A3F18;
+    --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md:    0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+}

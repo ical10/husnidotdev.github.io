@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getAllPosts } from '../lib/posts';
+import { SITE } from '../site';
+
+const posts = await getAllPosts();
+const featured = posts.slice(0, SITE.postsPerPage);
+const hasMore = posts.length > SITE.postsPerPage;
+---
+<BaseLayout>
+  <section class="intro container">
+    <p class="welcome">
+      Welcome. I'm <strong>{SITE.author}</strong> — a web3 developer's home on web2.
+      I write about software engineering, Polkadot, EVM smart contracts, and the
+      occasional detour into stoicism, math, and island life.
+    </p>
+    <blockquote class="feynman">
+      <p>
+        "Study hard what interests you the most in the most undisciplined,
+        irreverent and original manner possible."
+      </p>
+      <footer>— Richard Feynman, <em>Perfectly Reasonable Deviations from the Beaten Track</em></footer>
+    </blockquote>
+  </section>
+
+  <section class="posts container">
+    <h2 class="section-title">Recent posts</h2>
+    <PostList posts={featured} />
+    {hasMore && (
+      <p class="more"><a href="/archive/">View archive →</a></p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-bottom: var(--space-5);
+  }
+  .welcome {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 var(--space-3);
+  }
+  .feynman {
+    margin: var(--space-3) 0 0;
+    padding: 0 0 0 var(--space-3);
+    border-left: 3px solid var(--rule-strong);
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--text-muted);
+  }
+  .feynman footer {
+    font-style: normal;
+    font-size: var(--fs-small);
+    margin-top: 0.4em;
+  }
+  .section-title {
+    font-family: var(--font-sans);
+    font-size: var(--fs-tiny);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    color: var(--text-subtle);
+    margin: 0 0 var(--space-2);
+    padding-bottom: var(--space-1);
+    border-bottom: 1px solid var(--rule);
+  }
+  .more {
+    margin-top: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+  }
+</style>

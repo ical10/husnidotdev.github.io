@@ -1,0 +1,111 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/source-serif-4';
+import '@fontsource-variable/jetbrains-mono';
+import 'katex/dist/katex.min.css';
+import '../styles/global.css';
+import { SITE } from '../site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SkipToContent from '../components/SkipToContent.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  canonical?: string;
+}
+
+const {
+  title,
+  description = SITE.description,
+  ogImage,
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+  canonical,
+} = Astro.props;
+
+const pageTitle = title ? `${title} — ${SITE.title}` : SITE.title;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : null;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
+
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta property="og:site_name" content={SITE.title} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+
+    <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+    <meta name="theme-color" content="#FAFAF7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16181B" media="(prefers-color-scheme: dark)" />
+  </head>
+  <body>
+    <SkipToContent />
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Copy buttons + language labels for code blocks
+      document.querySelectorAll('main pre').forEach((pre) => {
+        if (pre.parentElement?.classList.contains('code-block')) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block';
+        pre.parentNode?.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+
+        const code = pre.querySelector('code');
+        const lang = code?.className.match(/language-(\w+)/)?.[1];
+        if (lang && lang !== 'plaintext') {
+          const label = document.createElement('span');
+          label.className = 'code-lang';
+          label.textContent = lang;
+          wrapper.appendChild(label);
+        }
+
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.type = 'button';
+        btn.setAttribute('aria-label', 'Copy code');
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', async () => {
+          await navigator.clipboard.writeText(code?.textContent ?? '');
+          btn.textContent = 'Copied';
+          btn.dataset.copied = 'true';
+          setTimeout(() => { btn.textContent = 'Copy'; delete btn.dataset.copied; }, 1500);
+        });
+        wrapper.appendChild(btn);
+      });
+    </script>
+  </body>
+</html>

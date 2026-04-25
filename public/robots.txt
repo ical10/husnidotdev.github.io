@@ -1,2 +1,4 @@
 User-agent: *
-Sitemap: http://localhost:1313/sitemap.xml
+Allow: /
+
+Sitemap: https://ical10.github.io/sitemap-index.xml

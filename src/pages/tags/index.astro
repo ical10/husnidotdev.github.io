@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllPosts, getAllTags } from '../../lib/posts';
+
+const posts = await getAllPosts();
+const tags = [...getAllTags(posts).entries()].sort((a, b) => b[1].posts.length - a[1].posts.length);
+const slug = (s: string) => s.toLowerCase().replace(/\s+/g, '-');
+---
+<BaseLayout title="Tags">
+  <div class="container">
+    <h1>Tags</h1>
+    <ul class="tag-list">
+      {tags.map(([key, { display, posts: list }]) => (
+        <li>
+          <a href={`/tags/${slug(key)}/`}>#{display}</a>
+          <span class="count">{list.length}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  h1 { font-family: var(--font-sans); font-size: var(--fs-h1); margin-top: 0; }
+  .tag-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em 1em;
+    font-family: var(--font-sans);
+  }
+  .tag-list a { color: var(--text); text-decoration: none; font-weight: 500; }
+  .tag-list a:hover { color: var(--accent); }
+  .count {
+    margin-left: 0.3em;
+    color: var(--text-subtle);
+    font-size: var(--fs-small);
+  }
+</style>
